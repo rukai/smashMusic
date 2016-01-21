@@ -7,9 +7,9 @@ from musicplayer import MusicPlayer
 class SmashMusic:
     def __init__(self):
         self.stageNames = ["Menu", "PrincessPeachsCastle", "RainbowCruise", "KongoJungle", "JungleJapes", "GreatBay", "Temple", "YoshisStory", "YoshisIsland", "FountainOfDreams", "GreenGreens", "Corneria", "Venom", "Brinstar", "BrinstarDepths", "Onett", "Fourside", "MuteCity", "BigBlue", "PokemonStadium", "PokeFloats", "MushroomKingdom", "MushroomKingdomII", "IcicleMountain", "FlatZone", "Battlefield", "FinalDestination", "DreamLand", "YoshisIsland64", "KongoJungle64"]
-        self.player = MusicPlayer(self.stageNames)
-        self.setStage(-1)
+        self.playerSet = False
         self.gamePlayed = False
+        self.setStage(-1)
         self.generateLocationsFile()
 
     def generateLocationsFile(self):
@@ -27,7 +27,6 @@ class SmashMusic:
             #get stage id
             if address == "804D6CAC":
                 stage = data[2]
-                print(stage)
                 stageStart = data[3]
                 if stageStart == 1:
                     self.setStage(stage)
@@ -44,7 +43,12 @@ class SmashMusic:
         return self.stageNames[stageID+1]
 
     def setStage(self, stageID):
-        self.player.play(self.stageIDtoName(stageID))
+        if self.playerSet:
+            self.player.stop()
+            self.playerSet = True
+        self.player = MusicPlayer(self.stageNames)
+        self.player.setPlaylist(self.stageIDtoName(stageID))
+        self.player.start()
         print("stageID: " + str(stageID))
     
 

@@ -1,0 +1,7 @@
+#Stage id
+#updated when hovered over on stage select
+804D6CAC
+
+#music ID
+#is set to \ff\ff\ff\ff when game is left and before a proper music ID is set for the first time
+8049e760

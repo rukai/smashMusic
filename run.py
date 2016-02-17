@@ -1,8 +1,16 @@
 #!/bin/env python3
 
+import os.path
+import os
+import sys
+
 from mw import MemoryWatcher
 from os.path import expanduser
 from musicplayer import MusicPlayer
+
+
+memoryWatcherPath = expanduser("~/.local/share/dolphin-emu/MemoryWatcher")
+scriptPath = os.path.dirname(os.path.realpath(sys.argv[0]))
 
 class SmashMusic:
     def __init__(self):
@@ -13,16 +21,16 @@ class SmashMusic:
         self.generateLocationsFile()
 
     def generateLocationsFile(self):
-        #mkdir -p .dolphin-emu/MemoryWatcher
-        with open(expanduser("~/.dolphin-emu/MemoryWatcher/Locations.txt"), "w") as dest:
-            with open("locations/GALE01.txt") as origin: #directory needs to refer to location script is from
+        os.makedirs(memoryWatcherPath, exist_ok=True)
+        with open(memoryWatcherPath + "/Locations.txt", "w") as dest:
+            with open(scriptPath + "/locations/GALE01.txt") as origin:
                 for line in origin:
                     output = line[:line.find('#')]
                     if output != "":
                         dest.write(output + '\n')
 
     def run(self):
-        watch = MemoryWatcher(expanduser("~/.dolphin-emu/MemoryWatcher/MemoryWatcher"))
+        watch = MemoryWatcher(memoryWatcherPath + "/MemoryWatcher")
         for address, data in watch:
             #get stage id
             if address == "804D6CAC":

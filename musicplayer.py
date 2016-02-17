@@ -14,7 +14,7 @@ class MusicPlayer(threading.Thread):
         open(self.playlistPath("All"), "a").close()
         self.running = True
     
-    def stop():
+    def stop(self):
         self.running = False
 
     def playlistPath(self, playlist):
@@ -32,6 +32,7 @@ class MusicPlayer(threading.Thread):
             print(self.vlcPlayer.get_position())
             if self.vlcPlayer.get_position() == 1:
                 self.playMusic()
+        self.vlcPlayer.stop()
 
     def playMusic(self):
         Media = self.vlcInstance.media_new_path(self.path)
@@ -43,10 +44,12 @@ class MusicPlayer(threading.Thread):
         with open(playlistPath) as playlistFile:
             playlist = playlistFile.readlines()
             if len(playlist) > 0:
-                index = 3 #random.randint(0, len(playlist)-1)
+                index = random.randint(0, len(playlist)-1)
                 path = pathPrefix + playlist[index].strip()
                 return os.path.realpath(path)
             elif playlistName != "All":
                 return self.getRandomMusicPath("All")
 
 pathPrefix = "/home/rubic/Music/"
+
+#TODO: split up song selection and vlc manipulating

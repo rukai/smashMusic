@@ -45,10 +45,10 @@ class SmashMusic:
     def setStage(self, stageID):
         if self.playerSet:
             self.player.stop()
-            self.playerSet = True
         self.player = MusicPlayer(self.stageNames)
         self.player.setPlaylist(self.stageIDtoName(stageID))
         self.player.start()
+        self.playerSet = True
         print("stageID: " + str(stageID))
     
 
